@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+	<title>Game</title>
+	<style>
+	html,body{
+		height:100%;
+		margin:0;
+	}
+
+	body{
+		background:#444;
+		font-family:Consolas;
+	}
+
+	#container{
+		position:absolute;
+		left:50%;
+		top:50%;
+		border:1px solid #000;
+		transform:translate(-50%,-50%);
+		box-shadow:10px 10px 40px rgba(0,0,0,0.5);
+	}
+
+	canvas{
+		width:600px;
+		height:440px
+	}
+	
+	#progress{
+		background:rgba(255,255,255,0.5);
+		position:fixed;
+		left:0px;
+		bottom:20px;
+		border:1px solid white;
+		font-size:80px;
+		transition:1s;
+		color:#fff;
+		text-align:center;
+	}
+	</style>
+	</head>
+
+	<body>
+		<div id="container">	
+			<canvas id="canvas">
+				
+			</canvas>
+		</div>
+		<div id="progress"></div>
+		<script>
+		var img_array=["https://s3-us-west-2.amazonaws.com/s.cdpn.io/292951/tileset-big.png","https://www.spriters-resource.com/download/2891/","",""];
+		var total=img_array.length;
+		var progress=document.getElementById("progress");
+		var canvas=document.getElementById("canvas");
+		var ctx=canvas.getContext("2d");
+		var count=0;
+		
+		function preloadImage(url){
+			var img=new Image();
+			img.src=url;
+			img.onload=function(){
+				count++;
+				progress.style.width=Math.round(count/total*100)+"%";
+				progress.innerHTML=Math.round(count/total*100)+"%";
+				if(count==total){
+					progress.style.opacity=0;
+					begin();
+				}
+			}
+		}
+
+		function init(){
+			for(var i=0;i<img_array.length;i++){
+				//preloadImage("https://leblog92.github.io/repo/img/"+img_array[i]);
+				preloadImage(img_array[i]);
+			}
+		}
+		
+		init();
+		
+		function begin(){
+		 	alert("yay !");
+		}
+		
+		</script>
+	</body>
+</html>
