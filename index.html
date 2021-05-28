@@ -49,7 +49,7 @@
 		var ctx=canvas.getContext("2d");
 		var ww=window.innerWidth;
 		var wh=window.innerHeight;
-		var img_array=[];
+		var img_array=["explosion.png"];
 		var total=img_array.length;
 		var progress=document.getElementById("progress");
 		var count=0;
@@ -70,17 +70,19 @@
 
 		function init(){
 			for(var i=0;i<img_array.length;i++){
-				preloadImage(img_array[i]);
+				preloadImage("https://leblog92.github.io/can1/img/"+img_array[i]);
 			}
 		}
-		
+
 		ctx.beginPath();
 		ctx.rect(0,0,800,450);
 		ctx.fill();
 		init();
-		
+
 		function begin(){
-			
+			var boom=new Image();
+			boom.src=img_array[0];
+			ctx.drawImage(boom,10,10);
 		}
 		
 		</script>
