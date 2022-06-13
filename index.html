@@ -1,90 +1,53 @@
-<!doctype html>
-<html lang="en">
-	<head>
-	<meta charset="utf-8">
-	<title>Game</title>
-	<style>
-	html,body{
-		height:100%;
-		margin:0;
-	}
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<style>
+#list{
+width:auto;
+height:auto;
+}
+</style>
 
-	body{
-		background:#444;
-		font-family:Consolas;
-	}
+</head>
+<body>
+<textarea id="list">
+https://www.babelio.com/livres/McDowell-Blackwater-tome-5--La-fortune/1413149
+</textarea>
+<div id="div1">Result</div><br>
+<button id="butt1">Go</button>
 
-	#container{
-		position:absolute;
-		left:50%;
-		top:50%;
-		transform:translate(-50%,-50%);
-	}
+<script>
+function textAreaAdjust(element) {
+  element.style.height = "1px";
+  element.style.height = (25+element.scrollHeight)+"px";
+}
 
-	canvas{
-		box-shadow:10px 10px 40px rgba(0,0,0,0.5);
-	}
-	
-	#progress{
-		position:fixed;
-		background:rgba(255,255,255,0.5);
-		border:1px solid white;
-		top:50%;
-		transform:translate(0%,-50%);
-		font-size:50px;
-		transition:1s;
-		color:#fff;
-		text-align:center;
-	}
-	</style>
-	</head>
+textAreaAdjust(document.getElementById("list"))
 
-	<body>
-		<div id="container">
-			<div id="progress"></div>
-			<canvas id="canvas" width="800px" height="450px"></canvas>
-		</div>
-		<script>
-		var canvas=document.getElementById("canvas");
-		var ctx=canvas.getContext("2d");
-		var ww=window.innerWidth;
-		var wh=window.innerHeight;
-		var img_array=["explosion.png"];
-		var total=img_array.length;
-		var progress=document.getElementById("progress");
-		var count=0;
-		
-		function preloadImage(url){
-			var img=new Image();
-			img.src=url;
-			img.onload=function(){
-				count++;
-				progress.style.width=Math.round(count/total*100)+"%";
-				progress.innerHTML=Math.round(count/total*100)+"%";
-				if(count==total){
-					progress.style.opacity=0;
-					begin();
-				}
-			}
-		}
+const getTitle=(url)=>{  
+	return fetch(`https://crossorigin.me/${url}`)
+		.then((response)=>response.text())
+		.then((html)=>{
+			const doc = new DOMParser().parseFromString(html, "text/html");
+			const title = doc.querySelectorAll('title')[0];
+			return title.innerText;
+	});
+};
 
-		function init(){
-			for(var i=0;i<img_array.length;i++){
-				preloadImage("https://leblog92.github.io/can1/img/"+img_array[i]);
-			}
-		}
+document.getElementById("butt1").addEventListener("click",myfun);
 
-		ctx.beginPath();
-		ctx.rect(0,0,800,450);
-		ctx.fill();
-		init();
 
-		function begin(){
-			var boom=new Image();
-			boom.src="https://leblog92.github.io/can1/img/"+img_array[0];
-			ctx.drawImage(boom,10,10);
-		}
-		
-		</script>
-	</body>
+function myfun(){
+var urls=document.getElementById("list").value.split("\n");
+document.getElementById("div1").innerHTML=urls;
+
+Promise.all(
+urls.map((url)=>getTitle(url))
+).then((titles)=>{
+console.log(titles);
+});
+
+}
+</script>
+</body>
 </html>
