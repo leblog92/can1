@@ -3,8 +3,8 @@
 <meta charset="utf-8">
 <style>
 #list{
-width:auto;
-height:auto;
+width:800px;
+height:450px;
 }
 </style>
 
@@ -17,33 +17,24 @@ https://www.babelio.com/livres/McDowell-Blackwater-tome-5--La-fortune/1413149
 <button id="butt1">Go</button>
 
 <script>
-function textAreaAdjust(element) {
-  element.style.height = "1px";
-  element.style.height = (25+element.scrollHeight)+"px";
-}
-
-textAreaAdjust(document.getElementById("list"))
-
 const getTitle=(url)=>{  
 	return fetch(`https://crossorigin.me/${url}`)
 		.then((response)=>response.text())
 		.then((html)=>{
-			const doc = new DOMParser().parseFromString(html, "text/html");
-			const title = doc.querySelectorAll('title')[0];
+			const doc=new DOMParser().parseFromString(html,"text/html");
+			const title=doc.querySelectorAll("title")[0];
 			return title.innerText;
 	});
 };
 
 document.getElementById("butt1").addEventListener("click",myfun);
 
-
 function myfun(){
 var urls=document.getElementById("list").value.split("\n");
 document.getElementById("div1").innerHTML=urls;
-
 Promise.all(
-urls.map((url)=>getTitle(url))
-).then((titles)=>{
+urls.map((url) => getTitle(url))
+).then((titles) => {
 console.log(titles);
 });
 
